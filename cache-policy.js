@@ -15,9 +15,9 @@
 
 /** The worker's caches. A new layout gets a new name; the worker deletes names it doesn't know. */
 export const CACHES = {
-  build: "incari-build-v1",
-  immutable: "incari-assets-v1",
-  page: "incari-page-v1",
+  build: "ruian-build-v1",
+  immutable: "ruian-assets-v1",
+  page: "ruian-page-v1",
 }         ;
 
 /** Files the page starts from, kept for offline starts. */

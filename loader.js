@@ -28,7 +28,7 @@
  
 
 /**
- * The Rust build (ADR 0068): Horizon's browser port with Incari's mods, a page of its own that the
+ * The Rust build (ADR 0068): Horizon's browser port with Ruian's mods, a page of its own that the
  * loader opens instead of loading a module.
  */
                              
@@ -71,7 +71,7 @@
  
 
 /**
- * What an experiment's build (no `build.json`) has: TeaVM's development output as `incari.wasm`. It
+ * What an experiment's build (no `build.json`) has: TeaVM's development output as `ruian.wasm`. It
  * may be either kind; the page gives every module the Fast build's imports where the browser has
  * JSPI (boot.ts), so a Fast experiment runs as this entry too.
  */
@@ -81,10 +81,10 @@ export const DEFAULT_MANIFEST                = {
   game: "unknown",
   release: false,
   compatible: {
-    runtime: "incari.wasm-runtime.js",
-    module: "incari.wasm",
-    deobfuscator: "incari.wasm-deobfuscator.wasm",
-    debugInfo: "incari.wasm.teadbg",
+    runtime: "ruian.wasm-runtime.js",
+    module: "ruian.wasm",
+    deobfuscator: "ruian.wasm-deobfuscator.wasm",
+    debugInfo: "ruian.wasm.teadbg",
   },
   files: [],
 };

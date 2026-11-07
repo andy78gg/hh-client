@@ -41,7 +41,7 @@ worker.addEventListener("activate", (event) => {
     (async () => {
       const known = new Set        (Object.values(CACHES));
       for (const name of await caches.keys()) {
-        if (name.startsWith("incari-") && !known.has(name)) {
+        if (name.startsWith("ruian-") && !known.has(name)) {
           await caches.delete(name);
         }
       }

@@ -30,7 +30,7 @@ import {
                   
 } from "./loader.js";
 
-/** What the game's code calls while it starts (`incari.app.web.LoaderPage`, platform-web's first frame). */
+/** What the game's code calls while it starts (`ruian.app.web.LoaderPage`, platform-web's first frame). */
                               
                                               
                              
@@ -38,7 +38,7 @@ import {
                
  
 
-/** TeaVM's WebAssembly GC loader, which `incari.wasm-runtime.js` defines. */
+/** TeaVM's WebAssembly GC loader, which `ruian.wasm-runtime.js` defines. */
                         
            
          
@@ -73,12 +73,12 @@ const options = new URLSearchParams(location.search);
 /** What page-relative URLs resolve against: the single-file page's folder, whose own URL may have none. */
 const pageUrl = page.incariFiles?.base ?? location.href;
 
-const screen = element("incari-loader");
-const track = element("incari-track");
-const picker = element("incari-choose");
-const bar = element("incari-bar");
-const statusLine = element("incari-status");
-const detailLine = element("incari-detail");
+const screen = element("ruian-loader");
+const track = element("ruian-track");
+const picker = element("ruian-choose");
+const bar = element("ruian-bar");
+const statusLine = element("ruian-status");
+const detailLine = element("ruian-detail");
 
 function element(id        )              {
   const found = document.getElementById(id);
@@ -114,11 +114,11 @@ function fail(error         )       {
   show("The game couldn't start", text);
   // One line, so log readers that split on newlines still get the whole stack.
   const stack = error instanceof Error && error.stack !== undefined ? error.stack : text;
-  console.error("[Incari] Crashed: " + stack.replace(/\n\s*/g, " | "));
+  console.error("[Ruian] Crashed: " + stack.replace(/\n\s*/g, " | "));
 }
 
 /** Where the player's last pick is kept, to start the next choice on it. */
-const BUILD_KEY = "incari.build";
+const BUILD_KEY = "ruian.build";
 
 function rememberedBuild()                {
   try {
@@ -146,11 +146,11 @@ function askForBuild(builds                        , initial           )        
   picker.hidden = false;
   return new Promise((resolve) => {
     for (const build of builds) {
-      const button = element(`incari-pick-${build.kind}`)                     ;
+      const button = element(`ruian-pick-${build.kind}`)                     ;
       // Rust's button is hidden unless this copy has it.
       button.hidden = false;
       button.disabled = !build.available;
-      element(`incari-why-${build.kind}`).textContent = build.reason ?? "";
+      element(`ruian-why-${build.kind}`).textContent = build.reason ?? "";
       button.addEventListener("click", () => {
         picker.hidden = true;
         track.hidden = false;
@@ -199,7 +199,7 @@ async function registerWorker(manifest               )                {
     }
   } catch (error) {
     // Older browsers have no module workers: the game runs, uncached.
-    console.warn("[Incari] No service worker, so nothing is cached between visits: " + String(error));
+    console.warn("[Ruian] No service worker, so nothing is cached between visits: " + String(error));
   }
 }
 
@@ -311,7 +311,7 @@ async function startBuild(manifest               , kind           , target      
     // the back/forward cache keeps, whose game can't run again: it reloads if it comes back.
     window.addEventListener("pagehide", (event) => {
       console.log(
-        `[Incari] Loader: page hidden${event.persisted ? " into the back/forward cache" : ""}; ending its threads`,
+        `[Ruian] Loader: page hidden${event.persisted ? " into the back/forward cache" : ""}; ending its threads`,
       );
       jspi.terminate();
     });
@@ -334,7 +334,7 @@ async function boot()                {
   // Not one from a browser extension's script, which isn't the game's to end.
   window.addEventListener("error", (event) => {
     if (/^(chrome|moz|safari(-web)?)-extension:/.test(event.filename)) {
-      console.warn(`[Incari] Ignored an extension's error: ${event.message}`);
+      console.warn(`[Ruian] Ignored an extension's error: ${event.message}`);
       return;
     }
     fail(event.error ?? event.message);
@@ -381,7 +381,7 @@ async function boot()                {
   }
   if (choice.kind === "rust") {
     // Its own page, files and service worker (ADR 0068).
-    console.log("[Incari] Loader: opening the Rust build");
+    console.log("[Ruian] Loader: opening the Rust build");
     location.assign(rustPage(choice.target, location.href));
     return;
   }
@@ -401,14 +401,14 @@ async function boot()                {
   const why =
     requested !== null ? "asked for in the address" : only !== undefined ? "the only one that runs here" : "picked";
   console.log(
-    `[Incari] Loader: build ${manifest.id.slice(0, 12)} (${manifest.release ? "release" : "development"}), running ${buildName(
+    `[Ruian] Loader: build ${manifest.id.slice(0, 12)} (${manifest.release ? "release" : "development"}), running ${buildName(
       choice.kind,
     )} (${why}); JSPI ${features.jspi ? "yes" : "no"}, cross-origin isolated ${features.crossOriginIsolated ? "yes" : "no"}`,
   );
   await registerWorker(manifest);
   const started = performance.now();
   await startBuild(manifest, choice.kind, choice.target);
-  console.log(`[Incari] Loader: build loaded and started in ${String(Math.round(performance.now() - started))} ms`);
+  console.log(`[Ruian] Loader: build loaded and started in ${String(Math.round(performance.now() - started))} ms`);
 }
 
 boot().catch(fail);

@@ -4,8 +4,8 @@
   "game": "26.3",
   "release": true,
   "fast": {
-    "runtime": "incari.wasm-runtime.js",
-    "module": "incari-fast.wasm"
+    "runtime": "ruian.wasm-runtime.js",
+    "module": "ruian-fast.wasm"
   },
   "programs": {
     "mesher": {
@@ -13,17 +13,17 @@
       "module": "mesher.wasm"
     }
   },
-  "pack": "incari.pack",
+  "pack": "ruian.pack",
   "files": [
     {
-      "path": "incari.wasm-runtime.js",
+      "path": "ruian.wasm-runtime.js",
       "size": 17268,
       "sha256": "4fa1e0e0d686cc6e0a0d111e606cb876f7168bd695d9e3d639e7d5684453089b"
     },
     {
-      "path": "incari-fast.wasm",
+      "path": "ruian-fast.wasm",
       "size": 36578374,
-      "sha256": "70695b1fce75b7d968a6cf6ab67184f2ec7e5109cf31d0eb06bc488fa2c6f518"
+      "sha256": "677f179f92476d29acb7a536ff94d210e830406f4d3e339c603e40998fdf7e64"
     },
     {
       "path": "mesher.wasm",
@@ -36,7 +36,7 @@
       "sha256": "4fa1e0e0d686cc6e0a0d111e606cb876f7168bd695d9e3d639e7d5684453089b"
     },
     {
-      "path": "incari.pack",
+      "path": "ruian.pack",
       "size": 1771407,
       "sha256": "464e5eb9e6a4cde4d23bff602c8dc35fe25854f8524b049ddffd27b39ea654f3"
     }
