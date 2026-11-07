@@ -19,12 +19,15 @@ changed. Nothing else about the client was altered.
 * `ruian-fast.wasm` holds the game's own text in a table of `[length][characters]` records at fixed
   offsets, so the rename inside it is **length-preserving**: "Incari" becomes "Ruian " and the pad is
   moved past the punctuation ("Incari." → "Ruian. "). Java identifiers (`IncariPlayer`,
-  `IncariLocalPosition`, …) and the GPL notice are untouched.
-* Two names had to stay: the canvas element is still `id="incari-canvas"` and the page still exposes
-  `window.incariLoader` / `incariFiles` / `incariBuild` / `__incariFrames`, because the compiled game
-  looks them up by those exact strings. They are internal plumbing, not branding.
-* The upstream logo and favicon were removed; the loading screen shows the backdrop photo and the word
-  RUIAN.
+  `IncariLocalPosition`, …) and the GPL notice are untouched. One side effect of keeping the length:
+  "Incari Client" now reads "Ruian  Client", with a doubled space.
+* Two names had to stay: the canvas element is still `id="incari-canvas"` — with a CSS rule that
+  targets that same id, since a canvas without a size makes the game grow its framebuffer until it
+  refuses to start — and the page still exposes `window.incariLoader` / `incariFiles` / `incariBuild` /
+  `__incariFrames`, because the compiled game looks them up by those exact strings. They are internal
+  plumbing, not branding.
+* The upstream logo, favicon and menu photo were removed; the loading screen is a dark blue gradient
+  with the word RUIAN.
 
 ## What is in the repository
 
