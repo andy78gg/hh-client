@@ -1,7 +1,6 @@
 /**
- * The page's service worker: caches the build for offline starts, and injects COOP/COEP headers
- * on the navigation response so the page is cross-origin isolated (SharedArrayBuffer enabled).
- * GitHub Pages can't send these headers, so the SW adds them on the main document response.
+ * The page's service worker: keeps the build and the sounds the game has played, so a returning
+ * player downloads nothing that hasn't changed and can start offline.
  */
 import { CACHES, staleBuildEntries, strategyFor } from "./cache-policy.js";
 
@@ -47,21 +46,7 @@ worker.addEventListener("message", (event) => {
   })();
 });
 
-/** Add COOP/COEP headers to the navigation (HTML) response. Read the full body to avoid stream issues. */
-async function isolateNavigation(response) {
-  const body = await response.arrayBuffer();
-  const headers = new Headers(response.headers);
-  headers.set("Cross-Origin-Opener-Policy", "same-origin");
-  headers.set("Cross-Origin-Embedder-Policy", "require-corp");
-  return new Response(body, {
-    status: response.status,
-    statusText: response.statusText,
-    headers: headers,
-  });
-}
-
 async function respond(request, strategy) {
-  const isNavigation = request.mode === "navigate";
   if (strategy === "page") {
     const cache = await caches.open(CACHES.page);
     try {
@@ -69,16 +54,10 @@ async function respond(request, strategy) {
       if (response.ok) {
         await cache.put(request, response.clone());
       }
-      if (isNavigation) {
-        return isolateNavigation(response);
-      }
       return response;
     } catch (error) {
       const cached = await cache.match(request);
       if (cached !== undefined) {
-        if (isNavigation) {
-          return isolateNavigation(cached);
-        }
         return cached;
       }
       throw error;
