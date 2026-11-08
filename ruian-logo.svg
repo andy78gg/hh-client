@@ -1,0 +1,14 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="400" height="200" viewBox="0 0 400 200">
+  <defs>
+    <linearGradient id="gold" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#ffd966"/>
+      <stop offset="40%" stop-color="#f0a030"/>
+      <stop offset="100%" stop-color="#c06010"/>
+    </linearGradient>
+    <filter id="shadow" x="-5%" y="-5%" width="110%" height="115%">
+      <feDropShadow dx="3" dy="4" stdDeviation="2" flood-color="#000" flood-opacity="0.6"/>
+    </filter>
+  </defs>
+  <text x="200" y="85" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="62" font-weight="900" fill="url(#gold)" stroke="#8b4513" stroke-width="2" filter="url(#shadow)">Ruian</text>
+  <text x="200" y="160" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="62" font-weight="900" fill="url(#gold)" stroke="#8b4513" stroke-width="2" filter="url(#shadow)">Client</text>
+</svg>
