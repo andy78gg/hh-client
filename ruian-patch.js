@@ -1,4 +1,23 @@
 (function () {
+  // --- One-time cleanup: unregister old SW and clear caches from the COOP/COEP experiment ---
+  if (!sessionStorage.getItem('ruian-cleaned')) {
+    sessionStorage.setItem('ruian-cleaned', '1');
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.getRegistrations().then(function (regs) {
+        var unregs = regs.map(function (r) { return r.unregister(); });
+        return Promise.all(unregs);
+      }).then(function () {
+        if (window.caches) {
+          return caches.keys().then(function (keys) {
+            return Promise.all(keys.map(function (k) { return caches.delete(k); }));
+          });
+        }
+      }).then(function () {
+        location.reload();
+      });
+    }
+  }
+
   function patchWasm(bytes) {
     var off = 35150214;
     if (bytes.length > off + 6 &&
