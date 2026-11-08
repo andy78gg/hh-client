@@ -1,24 +1,4 @@
 (function () {
-  // --- Auto-reload once after service worker takes control, so COOP/COEP headers apply ---
-  // First visit: SW registers but doesn't control the page yet → no reload.
-  // After SW activates + claims: page is still non-isolated (loaded before SW) → reload once.
-  // Reloaded page: SW serves HTML with COOP/COEP → crossOriginIsolated=true → no reload.
-  function maybeReloadForIsolation() {
-    if (!('serviceWorker' in navigator)) return;
-    if (crossOriginIsolated) return; // already isolated, nothing to do
-    if (!navigator.serviceWorker.controller) return; // SW not controlling this page yet
-    if (sessionStorage.getItem('ruian-isolated-reload')) return; // already reloaded once
-    sessionStorage.setItem('ruian-isolated-reload', '1');
-    console.log('[Ruian] Service worker is controlling but page is not isolated — reloading to enable SharedArrayBuffer...');
-    setTimeout(function () { location.reload(); }, 200);
-  }
-  // Check after a tick, and also when the SW controller changes.
-  setTimeout(maybeReloadForIsolation, 500);
-  navigator.serviceWorker.addEventListener('controllerchange', function () {
-    setTimeout(maybeReloadForIsolation, 300);
-  });
-
-  // --- wasm runtime patch: INCARI → RUIAN at offset 35150214 ---
   function patchWasm(bytes) {
     var off = 35150214;
     if (bytes.length > off + 6 &&
