@@ -1,8 +1,7 @@
 /**
- * The page's service worker: keeps the build and the sounds the game has played, so a returning
- * player downloads nothing that hasn't changed and can start offline. Also adds COOP/COEP headers
- * so the page is cross-origin isolated (SharedArrayBuffer enabled) — GitHub Pages can't send
- * these headers itself, so the SW injects them on every response.
+ * The page's service worker: caches the build for offline starts, and injects COOP/COEP headers
+ * on the navigation response so the page is cross-origin isolated (SharedArrayBuffer enabled).
+ * GitHub Pages can't send these headers, so the SW adds them on the main document response.
  */
 import { CACHES, staleBuildEntries, strategyFor } from "./cache-policy.js";
 
@@ -48,15 +47,13 @@ worker.addEventListener("message", (event) => {
   })();
 });
 
-/** Wrap a response with COOP/COEP (navigation) or CORP (subresource) headers. */
-function isolate(response, isNavigation) {
+/** Add COOP/COEP headers to the navigation (HTML) response. Read the full body to avoid stream issues. */
+async function isolateNavigation(response) {
+  const body = await response.arrayBuffer();
   const headers = new Headers(response.headers);
-  if (isNavigation) {
-    headers.set("Cross-Origin-Opener-Policy", "same-origin");
-    headers.set("Cross-Origin-Embedder-Policy", "require-corp");
-  }
-  headers.set("Cross-Origin-Resource-Policy", "same-origin");
-  return new Response(response.body, {
+  headers.set("Cross-Origin-Opener-Policy", "same-origin");
+  headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+  return new Response(body, {
     status: response.status,
     statusText: response.statusText,
     headers: headers,
@@ -72,11 +69,17 @@ async function respond(request, strategy) {
       if (response.ok) {
         await cache.put(request, response.clone());
       }
-      return isolate(response, isNavigation);
+      if (isNavigation) {
+        return isolateNavigation(response);
+      }
+      return response;
     } catch (error) {
       const cached = await cache.match(request);
       if (cached !== undefined) {
-        return isolate(cached, isNavigation);
+        if (isNavigation) {
+          return isolateNavigation(cached);
+        }
+        return cached;
       }
       throw error;
     }
@@ -84,11 +87,11 @@ async function respond(request, strategy) {
   const cache = await caches.open(strategy === "build" ? CACHES.build : CACHES.immutable);
   const cached = await cache.match(request);
   if (cached !== undefined) {
-    return isolate(cached, isNavigation);
+    return cached;
   }
   const response = await fetch(request);
   if (response.ok) {
     void cache.put(request, response.clone());
   }
-  return isolate(response, isNavigation);
+  return response;
 }
