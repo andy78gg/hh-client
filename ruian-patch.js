@@ -1,5 +1,5 @@
 (function () {
-  // --- One-time cleanup: unregister old SW and clear caches from the COOP/COEP experiment ---
+  // --- One-time cleanup: unregister old SW and clear caches ---
   if (!sessionStorage.getItem('ruian-cleaned')) {
     sessionStorage.setItem('ruian-cleaned', '1');
     if ('serviceWorker' in navigator) {
@@ -15,6 +15,23 @@
       }).then(function () {
         location.reload();
       });
+    }
+  }
+
+  // --- After SW updates and takes control, reload once so COOP/COEP headers apply ---
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.addEventListener('controllerchange', function () {
+      if (!crossOriginIsolated && !sessionStorage.getItem('ruian-sw-reloaded')) {
+        sessionStorage.setItem('ruian-sw-reloaded', '1');
+        location.reload();
+      }
+    });
+    // If SW is already controlling but we're not isolated (old SW), trigger update + reload
+    if (navigator.serviceWorker.controller && !crossOriginIsolated &&
+        !sessionStorage.getItem('ruian-sw-reloaded')) {
+      sessionStorage.setItem('ruian-sw-reloaded', '1');
+      navigator.serviceWorker.controller.postMessage({ type: 'SKIP_WAITING' });
+      setTimeout(function () { location.reload(); }, 500);
     }
   }
 
