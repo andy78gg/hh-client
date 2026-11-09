@@ -1,6 +1,8 @@
 /**
  * The page's service worker: keeps the build and the sounds the game has played, so a returning
  * player downloads nothing that hasn't changed and can start offline.
+ * Also injects COOP/COEP headers on HTML navigation responses to enable crossOriginIsolated
+ * and SharedArrayBuffer (multi-threaded wasm).
  */
 import { CACHES, staleBuildEntries, strategyFor } from "./cache-policy.js";
 
@@ -46,13 +48,26 @@ worker.addEventListener("message", (event) => {
   })();
 });
 
+function withIsolationHeaders(response) {
+  const headers = new Headers(response.headers);
+  headers.set("Cross-Origin-Opener-Policy", "same-origin");
+  headers.set("Cross-Origin-Embedder-Policy", "require-corp");
+  return new Response(response.body, {
+    status: response.status,
+    statusText: response.statusText,
+    headers: headers,
+  });
+}
+
 async function respond(request, strategy) {
   if (strategy === "page") {
     const cache = await caches.open(CACHES.page);
     try {
       const response = await fetch(request, { cache: "no-cache" });
       if (response.ok) {
-        await cache.put(request, response.clone());
+        const isolated = withIsolationHeaders(response);
+        await cache.put(request, isolated.clone());
+        return isolated;
       }
       return response;
     } catch (error) {
