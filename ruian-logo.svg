@@ -1,33 +1,33 @@
 <svg xmlns="http://www.w3.org/2000/svg" width="380" height="230" viewBox="0 0 380 230">
   <defs>
     <linearGradient id="goldFront" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#fff3b0"/>
-      <stop offset="15%" stop-color="#ffd966"/>
-      <stop offset="50%" stop-color="#f0a030"/>
-      <stop offset="85%" stop-color="#d08020"/>
-      <stop offset="100%" stop-color="#a05810"/>
+      <stop offset="0%" stop-color="#fff8c0"/>
+      <stop offset="20%" stop-color="#ffe040"/>
+      <stop offset="50%" stop-color="#ffb000"/>
+      <stop offset="80%" stop-color="#ff8000"/>
+      <stop offset="100%" stop-color="#cc4400"/>
     </linearGradient>
     <linearGradient id="goldSide" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#8b5a10"/>
-      <stop offset="100%" stop-color="#4a2a05"/>
+      <stop offset="0%" stop-color="#cc6600"/>
+      <stop offset="100%" stop-color="#662200"/>
     </linearGradient>
     <linearGradient id="goldTop" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0%" stop-color="#fff8d0"/>
-      <stop offset="100%" stop-color="#ffe080"/>
+      <stop offset="0%" stop-color="#ffffff"/>
+      <stop offset="100%" stop-color="#ffe880"/>
     </linearGradient>
     <filter id="bigShadow" x="-10%" y="-10%" width="120%" height="130%">
-      <feDropShadow dx="3" dy="5" stdDeviation="2.5" flood-color="#000" flood-opacity="0.6"/>
+      <feDropShadow dx="3" dy="6" stdDeviation="3" flood-color="#000" flood-opacity="0.7"/>
     </filter>
   </defs>
 
   <g filter="url(#bigShadow)">
-    <text x="194" y="95" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldSide)" stroke="#3a2005" stroke-width="1">Ruian</text>
-    <text x="194" y="180" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldSide)" stroke="#3a2005" stroke-width="1">Client</text>
-    <text x="192.5" y="93" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldSide)" stroke="#4a2805" stroke-width="1">Ruian</text>
-    <text x="192.5" y="178" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldSide)" stroke="#4a2805" stroke-width="1">Client</text>
-    <text x="190" y="91" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldFront)" stroke="#6b3a08" stroke-width="2.5" paint-order="stroke">Ruian</text>
-    <text x="190" y="176" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldFront)" stroke="#6b3a08" stroke-width="2.5" paint-order="stroke">Client</text>
-    <text x="190" y="89" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="none" stroke="url(#goldTop)" stroke-width="0.8" opacity="0.7">Ruian</text>
-    <text x="190" y="174" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="none" stroke="url(#goldTop)" stroke-width="0.8" opacity="0.7">Client</text>
+    <text x="195" y="95" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldSide)" stroke="#220a00" stroke-width="1">Ruian</text>
+    <text x="195" y="180" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldSide)" stroke="#220a00" stroke-width="1">Client</text>
+    <text x="193" y="93" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldSide)" stroke="#441500" stroke-width="1">Ruian</text>
+    <text x="193" y="178" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldSide)" stroke="#441500" stroke-width="1">Client</text>
+    <text x="190" y="91" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldFront)" stroke="#551a00" stroke-width="2.5" paint-order="stroke">Ruian</text>
+    <text x="190" y="176" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="url(#goldFront)" stroke="#551a00" stroke-width="2.5" paint-order="stroke">Client</text>
+    <text x="190" y="89" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="none" stroke="url(#goldTop)" stroke-width="1" opacity="0.9">Ruian</text>
+    <text x="190" y="174" text-anchor="middle" font-family="Arial Black, Impact, sans-serif" font-size="60" font-weight="900" fill="none" stroke="url(#goldTop)" stroke-width="1" opacity="0.9">Client</text>
   </g>
 </svg>
