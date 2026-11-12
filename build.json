@@ -1,11 +1,15 @@
 {
   "format": 2,
-  "id": "c4257fd61b23f941fe9eea80182d3540b704aa16be38b1bfca8656d3a7cbe4bb",
+  "id": "e5e6fe405667d50defe24345e4bbc7bfdade09ddf2216ff048dbc71d633841d2",
   "game": "26.3",
   "release": true,
   "fast": {
     "runtime": "ruian.wasm-runtime.js",
     "module": "ruian-fast.wasm"
+  },
+  "compatible": {
+    "runtime": "ruian.wasm-runtime.js",
+    "module": "ruian.wasm"
   },
   "programs": {
     "mesher": {
@@ -22,8 +26,13 @@
     },
     {
       "path": "ruian-fast.wasm",
-      "size": 36578374,
-      "sha256": "677f179f92476d29acb7a536ff94d210e830406f4d3e339c603e40998fdf7e64"
+      "size": 38468018,
+      "sha256": "5528938ba4aa535fa9f0ad1cc016933a6dc3948ca490336b0a12847478fcafc4"
+    },
+    {
+      "path": "ruian.wasm",
+      "size": 75133476,
+      "sha256": "83d1bad50096f3dabe92391fbeaf58a545f60bcf09452cf5331560904854725e"
     },
     {
       "path": "mesher.wasm",

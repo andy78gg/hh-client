@@ -36,13 +36,27 @@
   }
 
   function patchWasm(bytes) {
-    var off = 35150214;
-    if (bytes.length > off + 6 &&
-        bytes[off] === 0x49 && bytes[off+1] === 0x4e &&
-        bytes[off+2] === 0x43 && bytes[off+3] === 0x41 &&
-        bytes[off+4] === 0x52 && bytes[off+5] === 0x49) {
-      bytes[off] = 0x52; bytes[off+1] = 0x55; bytes[off+2] = 0x49;
-      bytes[off+3] = 0x41; bytes[off+4] = 0x4e; bytes[off+5] = 0x20;
+    // Standalone INCARI -> RUIAN space. Tokens that touch an identifier
+    // character (e.g. INCARI_INSTANCED) are code and are left alone. The
+    // scan is anchored on the bytes, not a fixed offset, so it covers both
+    // the Fast and Compatible builds and survives version updates.
+    var magic = [0x49, 0x4e, 0x43, 0x41, 0x52, 0x49];
+    function ident(ch) {
+      return ch !== undefined && /[A-Za-z0-9_$]/.test(String.fromCharCode(ch));
+    }
+    var pos = 0;
+    while (pos + 6 <= bytes.length) {
+      var match = true;
+      for (var k = 0; k < 6; k++) {
+        if (bytes[pos + k] !== magic[k]) { match = false; break; }
+      }
+      if (match && !ident(bytes[pos - 1]) && !ident(bytes[pos + 6])) {
+        bytes[pos] = 0x52; bytes[pos + 1] = 0x55; bytes[pos + 2] = 0x49;
+        bytes[pos + 3] = 0x41; bytes[pos + 4] = 0x4e; bytes[pos + 5] = 0x20;
+        pos += 6;
+      } else {
+        pos += 1;
+      }
     }
     return bytes;
   }

@@ -6,8 +6,8 @@ Two very different jobs live in here:
 * The page and its modules are plain text, so every `incari` becomes `ruian`.
   The one exception is the handshake with the game: the WebAssembly module calls
   `window.incariLoader`, reads `window.incariFiles` / `window.incariBuild` and
-  `window.__incariFrames`, so those four names stay.
-* `incari-fast.wasm` is compiled TeaVM output. Its strings live in a table of
+  `window.__incariFrames`, so those names stay.
+* Both wasm modules (Fast and Compatible) are compiled TeaVM output. Its strings live in a table of
   `[length byte][characters]` records laid out at fixed offsets in the data
   section, so a shorter word cannot be written: every record after it would move
   and the code that points at them would read the wrong bytes. The patch therefore
@@ -44,6 +44,7 @@ TEXT_FILES = [
 
 RENAMES = {
     "incari-fast.wasm": "ruian-fast.wasm",
+    "incari.wasm": "ruian.wasm",
     "incari.wasm-runtime.js": "ruian.wasm-runtime.js",
     "incari.pack": "ruian.pack",
 }
@@ -54,6 +55,7 @@ KEEP = {
     "ruianLoader": "incariLoader",
     "ruianFiles": "incariFiles",
     "ruianBuild": "incariBuild",
+    "ruianTimer": "incariTimer",
     "__ruianFrames": "__incariFrames",
 }
 
@@ -104,9 +106,29 @@ def patch_wasm() -> None:
             pos += 6
         patched += 1
 
+    # Standalone uppercase INCARI (not an INCARI_IDENT token) -> RUIAN space.
+    pos = 0
+    upper = 0
+    while True:
+        pos = data.find(b"INCARI", pos)
+        if pos < 0:
+            break
+        before = data[pos - 1:pos]
+        after = data[pos + 6:pos + 7]
+        if (after and ident.match(after)) or (before and ident.match(before)):
+            pos += 6
+            continue
+        window = bytes(data[max(0, pos - 200):pos + 200])
+        if b"GPL-3.0" in window or b"contributors" in window or b"LICENSE" in window:
+            pos += 6
+            continue
+        data[pos:pos + 6] = b"RUIAN "
+        upper += 1
+        pos += 6
+
     WASM.write_bytes(bytes(data))
-    print(f"wasm: {patched} display strings renamed, {skipped_code} identifiers left, "
-          f"{skipped_licence} licence notices left")
+    print(f"wasm: {patched} display strings renamed, {upper} uppercase tokens, "
+          f"{skipped_code} identifiers left, {skipped_licence} licence notices left")
 
 
 def rewrite_manifest() -> None:
