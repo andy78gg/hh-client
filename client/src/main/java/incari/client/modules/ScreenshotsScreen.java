@@ -125,7 +125,7 @@ final class ScreenshotsScreen extends Screen {
     private int made;
 
     ScreenshotsScreen(@Nullable Screen parent, Path gameDirectory) {
-        super(Component.literal("Screenshots"));
+        super(Component.literal("截图"));
         this.parent = parent;
         this.folder = gameDirectory.resolve("screenshots");
         reload();

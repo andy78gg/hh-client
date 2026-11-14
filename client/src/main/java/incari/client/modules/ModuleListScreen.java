@@ -51,8 +51,8 @@ final class ModuleListScreen extends Screen {
     private static final int CARD_HEIGHT = 46;
     private static final int GAP = 6;
     private static final int SCROLL_STEP = 24;
-    private static final Component EDIT_HUD = Component.literal("Edit HUD");
-    private static final Component COSMETICS = Component.literal("Cosmetics");
+    private static final Component EDIT_HUD = Component.literal("编辑界面");
+    private static final Component COSMETICS = Component.literal("外观");
     /** The narrowest the search field gets before Edit HUD and Cosmetics lose their words. */
     private static final int MIN_SEARCH = 80;
     /** An icon-only menu button: the icon and its margins. */
@@ -79,7 +79,7 @@ final class ModuleListScreen extends Screen {
     private int shown;
 
     ModuleListScreen(@Nullable Screen parent, ModuleSystem system) {
-        super(Component.literal("Modules"));
+        super(Component.literal("模块"));
         this.parent = parent;
         this.system = system;
     }
@@ -149,7 +149,7 @@ final class ModuleListScreen extends Screen {
                     rebuildWidgets();
                 }));
         addRenderableWidget(new Entry(
-                Component.literal("Profile"),
+                Component.literal("配置"),
                 system.activeProfile(),
                 x,
                 bottom - step,
@@ -193,7 +193,7 @@ final class ModuleListScreen extends Screen {
         EditBox search = Ui.textField(
                 font, Component.literal("Search"), gridWidth - editWidth - cosmeticsWidth - 2 * Theme.GAP, 64);
         search.setPosition(gridX, panelY + PADDING);
-        search.setHint(Component.literal("Search modules"));
+        search.setHint(Component.literal("搜索模块"));
         search.setValue(query);
         search.setResponder(text -> {
             query = text;
@@ -290,7 +290,7 @@ final class ModuleListScreen extends Screen {
         if (shown == 0) {
             graphics.centeredText(
                     font,
-                    Component.literal("No modules match \"" + query.trim() + "\""),
+                    Component.literal("没有匹配的模块 \"" + query.trim() + "\""),
                     gridX + gridWidth / 2,
                     gridY + 24,
                     Theme.MUTED);

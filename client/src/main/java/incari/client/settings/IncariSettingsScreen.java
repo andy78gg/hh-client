@@ -54,13 +54,13 @@ public final class IncariSettingsScreen extends ListScreen {
         List<ControlList.Row> rows = new ArrayList<>();
         rows.add(list.heading(Component.literal("Menus")));
         List<Ui.Tile> tiles = new ArrayList<>();
-        tiles.add(tile(Icons.GRID, "Modules", "Turn modules on and off and change their settings.", () -> {
+        tiles.add(tile(Icons.GRID, "模块", "开启或关闭模块并调整设置。", () -> {
             IncariModules.openMenu(this);
         }));
-        tiles.add(tile(Icons.LAYOUT, "Edit HUD", "Move and resize HUD elements.", () -> {
+        tiles.add(tile(Icons.LAYOUT, "编辑界面", "移动和调整界面元素。", () -> {
             IncariModules.openHudEditor(this);
         }));
-        tiles.add(tile(Icons.HANGER, "Cosmetics", "Capes, hats, wings, trails and emotes.", () -> {
+        tiles.add(tile(Icons.HANGER, "外观", "披风、帽子、翅膀、拖尾和表情。", () -> {
             minecraft.gui.setScreen(new WardrobeScreen(this));
         }));
         tiles.add(tile(Icons.CAMERA, "Screenshots", "View, rename and download screenshots.", () -> {

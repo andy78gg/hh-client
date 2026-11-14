@@ -213,7 +213,7 @@ final class HudEditorScreen extends Screen {
         }
 
         if (empty) {
-            Button modules = Ui.button(Component.literal("Modules"), 96, this::backToModules);
+            Button modules = Ui.button(Component.literal("模块"), 96, this::backToModules);
             modules.setPosition(
                     (width - 96) / 2, (height - EMPTY_HEIGHT) / 2 + EMPTY_HEIGHT - 10 - Theme.CONTROL_HEIGHT);
             addRenderableWidget(modules);

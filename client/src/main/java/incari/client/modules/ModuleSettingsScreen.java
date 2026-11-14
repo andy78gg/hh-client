@@ -117,7 +117,7 @@ final class ModuleSettingsScreen extends ListScreen implements SettingControls.K
         // Three buttons share the footer's width when the module has a HUD element to place.
         int width = hud ? Theme.FOOTER_BUTTON_WIDTH * 2 / 3 : Theme.FOOTER_BUTTON_WIDTH;
         if (hud) {
-            footer.addChild(Ui.button(Component.literal("Edit HUD"), width, () -> {
+            footer.addChild(Ui.button(Component.literal("编辑界面"), width, () -> {
                 // Back to the editor if that's where this came from, rather than one over another.
                 if (parent instanceof HudEditorScreen) {
                     onClose();
