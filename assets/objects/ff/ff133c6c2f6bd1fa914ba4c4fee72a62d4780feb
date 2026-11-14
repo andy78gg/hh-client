@@ -1,0 +1,14 @@
+{
+  "language": {
+    "en_us": {
+      "name": "English",
+      "region": "US",
+      "bidirectional": false
+    },
+    "zh_cn": {
+      "name": "简体中文",
+      "region": "中国大陆",
+      "bidirectional": false
+    }
+  }
+}
