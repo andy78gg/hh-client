@@ -27,12 +27,12 @@
     {
       "path": "ruian-fast.wasm",
       "size": 38468018,
-      "sha256": "5528938ba4aa535fa9f0ad1cc016933a6dc3948ca490336b0a12847478fcafc4"
+      "sha256": "d4c53375da3c50035a8b2c4fd20340cb27b8c20a01150917fd0f8c817cccf142"
     },
     {
       "path": "ruian.wasm",
       "size": 75133476,
-      "sha256": "83d1bad50096f3dabe92391fbeaf58a545f60bcf09452cf5331560904854725e"
+      "sha256": "dd16a80ce3deff04076984a932d1ab822aad99decb8a84e2b103a1478a5329f6"
     },
     {
       "path": "mesher.wasm",
@@ -46,8 +46,8 @@
     },
     {
       "path": "ruian.pack",
-      "size": 1795427,
-      "sha256": "39a945831759ce1b3679b54774e18ce025162e513619ede05aa4bb543cf65f57"
+      "size": 15440910,
+      "sha256": "fdcb60858eb5160fd965d298d34e3979050002181cfae94aa23f81c491385039"
     }
   ]
 }
