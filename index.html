@@ -50,29 +50,29 @@
   <div id="ruian-loader" role="status" aria-live="polite">
     <img id="ruian-mark" src="ruian-logo.svg" alt="Ruian Client">
     <div id="ruian-track"><div id="ruian-bar"></div></div>
-    <div id="ruian-status">Loading</div>
+    <div id="ruian-status">加载中</div>
     <div id="ruian-detail"></div>
     <div id="ruian-choose" role="group" aria-labelledby="ruian-status" hidden>
       <button id="ruian-pick-fast" class="ruian-pick" type="button" aria-describedby="ruian-why-fast">
-        <span class="ruian-pick-title">Fast <span class="ruian-badge">Recommended</span></span>
-        <span class="ruian-pick-text">Higher frame rates, a smaller download and faster loading. Needs a recent browser.</span>
+        <span class="ruian-pick-title">快速版 <span class="ruian-badge">推荐</span></span>
+        <span class="ruian-pick-text">帧率更高，下载体积更小、加载更快。需要较新的浏览器。</span>
         <span class="ruian-pick-why" id="ruian-why-fast"></span>
       </button>
       <button id="ruian-pick-compatible" class="ruian-pick" type="button" aria-describedby="ruian-why-compatible">
-        <span class="ruian-pick-title">Compatible <span class="ruian-badge quiet">For older browsers</span></span>
-        <span class="ruian-pick-text">Works in Safari and older versions of Chrome and Firefox, but runs slower.</span>
+        <span class="ruian-pick-title">兼容版 <span class="ruian-badge quiet">适合旧浏览器</span></span>
+        <span class="ruian-pick-text">可在 Safari 以及旧版 Chrome、Firefox 中运行，速度稍慢。</span>
         <span class="ruian-pick-why" id="ruian-why-compatible"></span>
       </button>
       <button id="ruian-pick-rust" class="ruian-pick" type="button" aria-describedby="ruian-why-rust" hidden>
-        <span class="ruian-pick-title">Rust <span class="ruian-badge quiet">Experimental</span></span>
-        <span class="ruian-pick-text">The game rewritten in Rust, drawn with WebGPU. Few Ruian modules yet, and some things may not work.</span>
+        <span class="ruian-pick-title">Rust 版 <span class="ruian-badge quiet">实验性</span></span>
+        <span class="ruian-pick-text">用 Rust 重写的版本，以 WebGPU 绘制。Ruian 模块还不多，部分功能可能不可用。</span>
         <span class="ruian-pick-why" id="ruian-why-rust"></span>
       </button>
-      <p class="ruian-pick-hint">Choose Compatible only if Fast won't start in your browser.</p>
+      <p class="ruian-pick-hint">只有快速版无法启动时，才选兼容版。</p>
     </div>
   </div>
-  <noscript>The game needs JavaScript.</noscript>
-  <script src="ruian-patch.js"></script>
-  <script type="module" src="boot.js"></script>
+  <noscript>游戏需要启用 JavaScript。</noscript>
+  <script src="ruian-patch.js?v=zh10"></script>
+  <script type="module" src="boot.js?v=zh1"></script>
 </body>
 </html>

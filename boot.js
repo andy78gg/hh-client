@@ -123,7 +123,7 @@ function fail(error         )       {
   screen.classList.add("failed");
   screen.hidden = false;
   progress(1);
-  show("The game couldn't start", text);
+  show("游戏无法启动", text);
   // One line, so log readers that split on newlines still get the whole stack.
   const stack = error instanceof Error && error.stack !== undefined ? error.stack : text;
   console.error("[Ruian] Crashed: " + stack.replace(/\n\s*/g, " | "));
@@ -153,7 +153,7 @@ function rememberBuild(kind           )       {
  * is shown disabled, with the reason. Fast is marked as the one to use wherever it works.
  */
 function askForBuild(builds                        , initial           )                     {
-  show("Choose a version", "");
+  show("选择版本", "");
   track.hidden = true;
   picker.hidden = false;
   return new Promise((resolve) => {
@@ -253,7 +253,7 @@ async function withDownloadProgress   (url        , total        , label        
   const absolute = new URL(url, pageUrl).href;
   if (await cachedByWorker(absolute)) {
     progress(null);
-    show("Starting the game", "From this browser's cache");
+    show("正在启动游戏", "来自本机缓存");
     return work();
   }
   const original = window.fetch.bind(window);
@@ -265,10 +265,10 @@ async function withDownloadProgress   (url        , total        , label        
     }
     return countingResponse(response, (received) => {
       progress(total > 0 ? Math.min(received / total, 1) : null);
-      show(label, total > 0 ? `${formatBytes(received)} of ${formatBytes(total)}` : formatBytes(received));
+      show(label, total > 0 ? `${formatBytes(received)} / ${formatBytes(total)}` : formatBytes(received));
       if (total > 0 && received >= total) {
         progress(null);
-        show("Compiling the game", "");
+        show("正在编译游戏", "");
       }
     });
   };
@@ -280,7 +280,7 @@ async function withDownloadProgress   (url        , total        , label        
 }
 
 async function startBuild(manifest               , kind           , target            )                {
-  show("Loading", `The ${buildName(kind)} build`);
+  show("加载中", `${buildName(kind)} 版本`);
   await loadScript(versioned(manifest, target.runtime));
   const runtime = page.TeaVM;
   if (runtime === undefined) {
@@ -310,7 +310,7 @@ async function startBuild(manifest               , kind           , target      
   if (page.incariBuild !== undefined) {
     page.incariBuild.program = { runtime: versioned(manifest, target.runtime), module: moduleUrl, jspi: jspi !== null };
   }
-  const teavm = await withDownloadProgress(moduleUrl, sizeOf(manifest, target.module), "Downloading the game", () =>
+  const teavm = await withDownloadProgress(moduleUrl, sizeOf(manifest, target.module), "正在下载游戏", () =>
     runtime.wasmGC.load(moduleUrl, {
       stackDeobfuscator: debug,
       installImports: (imports) => {
@@ -345,7 +345,7 @@ async function startBuild(manifest               , kind           , target      
       }
     });
   }
-  show("Starting", "");
+  show("正在启动", "");
   // main() returns at the game's first suspension; the rest runs from the page's event loop.
   teavm.exports.main([]);
 }
@@ -380,7 +380,7 @@ async function boot()                {
     },
   };
 
-  show("Checking your browser");
+  show("正在检查浏览器");
   progress(null);
   const features = await detectFeatures();
   const manifest = await readManifest();
