@@ -7,6 +7,10 @@
     "minecraft/lang/zh_cn.json": {
       "hash": "dc7a2a97cd71031e709e3d3c90ee1b511fad1269",
       "size": 569479
+    },
+    "minecraft/resourcepacks/ruian-merged.zip": {
+      "hash": "59d017aa04fda337dff2e211ce1bbae3f0255698",
+      "size": 1540406
     }
   }
 }
