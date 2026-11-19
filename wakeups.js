@@ -155,15 +155,40 @@ export function createPageTimer(worker             )            {
 /** Ids of events on the {@link PageTimer}: above any id the page's own timers give out. */
 const PAGE_TIMER_IDS = 2 ** 30;
 
+/** The page's {@link AsyncImports}, and a way to run the events already due without waiting. */
+                                                        
+     
+                                                                                               
+                                                                                   
+                                                                                                    
+                                                                                                  
+                                                                          
+     
+                                   
+ 
+
 /**
- * The page's `teavmAsync`: TeaVM's own (every event on `setTimeout`) while the page is visible, so
- * a visible page runs exactly as it always has; while it's hidden, every event goes on the
- * {@link PageTimer}, which the browser doesn't hold back. So a hidden page's connection threads still
- * answer the server, and its frames still come. Not the `MessageChannel` of {@link createAsyncImports}:
- * on the page it once hung singleplayer at spawn (ADR 0043), and a spinning wait would busy a hidden
- * tab's core, where a worker's round trip paces it.
+ * The most due events one {@link PageAsyncImports.runWoken} runs: two threads that wake each other
+ * would otherwise keep it going, and the rest still have their timers.
  */
-export function createPageAsyncImports(scope                 )               {
+export const RUN_DUE_LIMIT = 32;
+
+/**
+ * The page's `teavmAsync`: TeaVM's own (every event on `setTimeout`) while the page is visible; while
+ * it's hidden, every event goes on the {@link PageTimer}, which the browser doesn't hold back. So a
+ * hidden page's connection threads still answer the server, and its frames still come. Not the
+ * `MessageChannel` of {@link createAsyncImports}: on the page it once hung singleplayer at spawn (ADR
+ * 0043), and a spinning wait would busy a hidden tab's core, where a worker's round trip paces it.
+ *
+ * A visible page's events due now are also listed for {@link PageAsyncImports.runWoken}. In play,
+ * Chrome runs a zero-delay timer set from a socket's message ~35 ms late (two frames, measured; a
+ * channel message later still), while animation frames and socket messages come on time: a
+ * connection's thread woken to read a message waited that long (ADR 0075).
+ */
+export function createPageAsyncImports(scope                 )                   {
+  // Timer id to its event and when it was offered, in the order offered (a Map keeps insertion order).
+  const due = new Map                                          ();
+  let nextSeq = 0;
   return {
     offer(instance, fn, time) {
       const delay = Math.max(0, time - scope.now());
@@ -176,15 +201,46 @@ export function createPageAsyncImports(scope                 )               {
           }, delay)
         );
       }
-      return scope.setTimeout(() => {
-        fn(instance);
-      }, delay);
+      if (delay > 0) {
+        return scope.setTimeout(() => {
+          fn(instance);
+        }, delay);
+      }
+      const id = scope.setTimeout(() => {
+        if (due.delete(id)) {
+          fn(instance);
+        }
+      }, 0);
+      due.set(id, {
+        seq: nextSeq++,
+        run: () => {
+          fn(instance);
+        },
+      });
+      return id;
     },
     kill(id) {
       if (id >= PAGE_TIMER_IDS) {
         scope.timer?.clear(id - PAGE_TIMER_IDS);
       } else {
+        due.delete(id);
         scope.clearTimeout(id);
+      }
+    },
+    runWoken(wake) {
+      const from = nextSeq;
+      wake();
+      let count = 0;
+      for (const [id, event] of due) {
+        if (count === RUN_DUE_LIMIT) {
+          return;
+        }
+        if (event.seq >= from) {
+          count++;
+          due.delete(id);
+          scope.clearTimeout(id);
+          event.run();
+        }
       }
     },
   };

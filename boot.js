@@ -76,6 +76,11 @@ import {
                                                    
      
                           
+     
+                                                                                                   
+                                                                                          
+     
+                                              
                                                                                                  
                                                             
  
@@ -323,7 +328,15 @@ async function startBuild(manifest               , kind           , target      
         if (options.get("wakeups") === "channel") {
           imports.teavmAsync = createAsyncImports();
         } else if (pageTimer !== null) {
-          imports.teavmAsync = createPageAsyncImports(pageWakeupScope(pageTimer));
+          const pageImports = createPageAsyncImports(pageWakeupScope(pageTimer));
+          imports.teavmAsync = pageImports;
+          // A server message's connection thread runs as the message comes (ADR 0075);
+          // `?netwake=timers` leaves it to TeaVM's timer, which play delays ~35 ms.
+          if (options.get("netwake") !== "timers") {
+            page.ruianRunWoken = (wake) => {
+              pageImports.runWoken(wake);
+            };
+          }
         }
       },
     }),

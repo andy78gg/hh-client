@@ -698,6 +698,7 @@
     [" also starts and stops it.", " \u4E5F\u80FD\u5F00\u59CB\u548C\u505C\u6B62", 4],
     ["Create Account", "\u521B\u5EFA\u8D26\u53F7", 2],
     ["Forgot Password", "\u5FD8\u8BB0\u5BC6\u7801", 3],
+    ["Select", "\u9009\u62E9", 0],
   ];
   // <<< zh-strings
 

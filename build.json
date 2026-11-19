@@ -1,6 +1,6 @@
 {
   "format": 2,
-  "id": "e5e6fe405667d50defe24345e4bbc7bfdade09ddf2216ff048dbc71d633841d2",
+  "id": "deaf0bc928f0231171c07626a329029e955d107097bdb3804c5ba207a40d506b",
   "game": "26.3",
   "release": true,
   "fast": {
@@ -26,13 +26,13 @@
     },
     {
       "path": "ruian-fast.wasm",
-      "size": 38468018,
-      "sha256": "5528938ba4aa535fa9f0ad1cc016933a6dc3948ca490336b0a12847478fcafc4"
+      "size": 38516719,
+      "sha256": "1025cc4aa6c5cea09cc1d1560bc2ffd3de486e22e39f8cc389a582b876dc7d56"
     },
     {
       "path": "ruian.wasm",
-      "size": 75133476,
-      "sha256": "83d1bad50096f3dabe92391fbeaf58a545f60bcf09452cf5331560904854725e"
+      "size": 75234326,
+      "sha256": "452095cad8a3dc08ca94cf4355da9a9fed96ef2290b1703974f602c232d07a76"
     },
     {
       "path": "mesher.wasm",
