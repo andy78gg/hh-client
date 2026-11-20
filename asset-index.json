@@ -9,8 +9,12 @@
       "size": 569479
     },
     "minecraft/resourcepacks/ruian-merged.zip": {
-      "hash": "37874676f859a7f45740bb117f33e0eb282d5d13",
-      "size": 749163
+      "hash": "bedb87b49b460e81aecbf3d32d02946c6fffe92f",
+      "size": 749369
+    },
+    "minecraft/resourcepacks/ruian-crystal.zip": {
+      "hash": "53a86e218f9db0b3277af85d4ee9a2f518eab156",
+      "size": 9287
     }
   }
 }
