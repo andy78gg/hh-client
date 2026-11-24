@@ -100,12 +100,22 @@
     }
   }
 
-  // 只认真的鼠标事件：自己合成的（isTrusted === false）不算按键，避免自我循环。
+  /**
+   * 只认真的鼠标事件：自己合成的（isTrusted === false）不算按键，避免自我循环。
+   *
+   * 左键特殊处理：开着连点器、在游戏里按住左键时，把"真实的按住"拦下来，
+   * 游戏只收到一串快速点按（按下后立刻松开）。游戏在每次松开时都会重置
+   * 挖方块的进度，所以按住左键只会打人、挖不穿方块；想挖方块按 C 关掉即可。
+   */
   window.addEventListener(
     "mousedown",
     (e) => {
       if (!e.isTrusted || e.button === 1) {
         return;
+      }
+      if (e.button === LEFT && state.on && live()) {
+        e.stopPropagation();
+        e.preventDefault();
       }
       held.add(e.button);
       start(e.button);
@@ -117,6 +127,9 @@
     (e) => {
       if (!e.isTrusted) {
         return;
+      }
+      if (e.button === LEFT && state.on && live()) {
+        e.stopPropagation();
       }
       held.delete(e.button);
       stop(e.button);
