@@ -149,21 +149,6 @@
   chip.hidden = true;
   document.body.appendChild(chip);
 
-  let toastTimer = null;
-  const toast = document.createElement("div");
-  toast.id = "ruian-clicker-toast";
-  toast.hidden = true;
-  document.body.appendChild(toast);
-
-  function say(text) {
-    toast.textContent = text;
-    toast.hidden = false;
-    clearTimeout(toastTimer);
-    toastTimer = setTimeout(() => {
-      toast.hidden = true;
-    }, 1800);
-  }
-
   function paint() {
     if (state.on) {
       chip.textContent = "连点器开";
@@ -195,7 +180,6 @@
     }
     save();
     paint();
-    say(state.on ? `连点器已开 · 按住鼠标即连点 ${CPS} CPS` : "连点器已关");
   });
 
   paint();
