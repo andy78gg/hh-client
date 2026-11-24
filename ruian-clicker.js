@@ -42,10 +42,17 @@
     }
   }
 
-  /** 真的在游戏里：指针锁在游戏画布上，且页面没被切到后台。 */
+  /**
+   * 游戏锁定的那个元素。游戏用 #incari-canvas 锁指针，但万一以后换了元素，
+   * 认任何被锁住的元素都算"在游戏里"，免得整套功能静默失效。
+   */
+  function locked() {
+    return document.pointerLockElement || null;
+  }
+
+  /** 真的在游戏里：指针被锁住（说明进了游戏、没开界面），且页面没被切到后台。 */
   function live() {
-    const el = document.pointerLockElement;
-    return el !== null && el === canvas() && document.visibilityState !== "hidden";
+    return locked() !== null && document.visibilityState !== "hidden";
   }
 
   /** 下一次的间隔：43 CPS 的基准 ± 30% 抖动。 */
@@ -57,7 +64,7 @@
 
   /** 补一次点击：按下再松开，两下都交给游戏自己的监听器。 */
   function fire(button) {
-    const el = canvas();
+    const el = locked() || canvas();
     if (el === null) {
       return;
     }
@@ -104,19 +111,25 @@
    * 只认真的鼠标事件：自己合成的（isTrusted === false）不算按键，避免自我循环。
    *
    * 左键特殊处理：开着连点器、在游戏里按住左键时，把"真实的按住"拦下来，
-   * 游戏只收到一串快速点按（按下后立刻松开）。游戏在每次松开时都会重置
-   * 挖方块的进度，所以按住左键只会打人、挖不穿方块；想挖方块按 C 关掉即可。
+   * 游戏只收到一串快速点按（按下后立刻松开）。游戏每次松开都会结束/重置
+   * 挖方块的进度，所以按住左键只出攻击、挖不穿方块；想挖方块按 C 关掉即可。
    */
+  function swallow(e) {
+    if (!e.isTrusted || e.button !== LEFT || !state.on || !live()) {
+      return false;
+    }
+    e.stopPropagation();
+    e.preventDefault();
+    return true;
+  }
+
   window.addEventListener(
     "mousedown",
     (e) => {
       if (!e.isTrusted || e.button === 1) {
         return;
       }
-      if (e.button === LEFT && state.on && live()) {
-        e.stopPropagation();
-        e.preventDefault();
-      }
+      swallow(e);
       held.add(e.button);
       start(e.button);
     },
@@ -128,15 +141,40 @@
       if (!e.isTrusted) {
         return;
       }
-      if (e.button === LEFT && state.on && live()) {
-        e.stopPropagation();
-      }
+      swallow(e);
       held.delete(e.button);
       stop(e.button);
     },
     true,
   );
+
+  // 双保险：万一游戏把监听器挂在了捕获阶段，再在画布自身用捕获抢先一步，
+  // 直接 stopImmediatePropagation（同一个节点上的后续监听器也不再执行）。
+  function guard(el) {
+    if (el === null || el === undefined || el.__ruianGuarded) {
+      return;
+    }
+    el.__ruianGuarded = true;
+    const block = (e) => {
+      if (!swallow(e)) {
+        return;
+      }
+      e.stopImmediatePropagation();
+      if (e.type === "mousedown") {
+        held.add(e.button);
+        start(e.button);
+      } else {
+        held.delete(e.button);
+        stop(e.button);
+      }
+    };
+    el.addEventListener("mousedown", block, true);
+    el.addEventListener("mouseup", block, true);
+  }
+
+  guard(canvas());
   document.addEventListener("pointerlockchange", () => {
+    guard(locked());
     if (!live()) {
       releaseAll();
     }
