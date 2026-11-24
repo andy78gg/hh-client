@@ -43,19 +43,8 @@
     .ruian-pick-hint { margin: 2px 0 0; font-size: 13px; opacity: 0.8; text-align: center;
       text-shadow: 0 1px 6px rgba(12, 19, 27, 0.6); }
     @keyframes ruian-pulse { 0%, 100% { opacity: 0.35; } 50% { opacity: 1; } }
-    /* 进游戏后的一小段操作说明：不接鼠标事件，不挡操作，十几秒后自己淡出 */
-    #ruian-tip { position: fixed; left: 50%; bottom: 28px; transform: translateX(-50%);
-      max-width: min(560px, calc(100vw - 32px)); padding: 12px 16px; border-radius: 10px;
-      background: rgba(12, 19, 27, 0.82); border: 1px solid rgba(255, 255, 255, 0.16);
-      box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45); font-size: 13px; line-height: 1.7;
-      pointer-events: none; opacity: 0; transition: opacity 400ms ease; }
-    #ruian-tip.shown { opacity: 1; }
-    #ruian-tip[hidden] { display: none; }
-    #ruian-tip-title { margin: 0 0 6px; font-size: 14px; font-weight: 600; color: #a9dcff; }
-    #ruian-tip ul { margin: 0; padding-left: 18px; }
-    #ruian-tip b { color: #fff; font-weight: 600; }
     /* 连点器状态角标与提示 */
-    #ruian-clicker-chip { position: fixed; top: 10px; left: 10px; padding: 3px 9px; border-radius: 6px;
+    #ruian-clicker-chip { position: fixed; top: 10px; right: 10px; padding: 3px 9px; border-radius: 6px;
       background: rgba(12, 19, 27, 0.72); border: 1px solid rgba(169, 220, 255, 0.45); color: #a9dcff;
       font-size: 12px; letter-spacing: 0.02em; pointer-events: none; }
     #ruian-clicker-chip[hidden] { display: none; }
@@ -92,19 +81,9 @@
       <p class="ruian-pick-hint">只有快速版无法启动时，才选兼容版。</p>
     </div>
   </div>
-  <div id="ruian-tip" hidden>
-    <p id="ruian-tip-title">物品栏 / 箱子 快捷操作</p>
-    <ul>
-      <li><b>Shift + 左键单击</b>物品：整叠直接移进箱子或背包（一次移一格）</li>
-      <li><b>按住左键拖过格子</b>：每格放 1 个（左键拖、Shift 只用来点）</li>
-      <li><b>按住右键拖过格子</b>：把手上的那一叠平均分给划过的格子</li>
-      <li><b>双击</b>物品：把背包里同类的都收拢到鼠标上</li>
-      <li><b>C 键</b>：连点器开关；开着后按住左键＝只打人、不挖方块，按住右键同样连点（43 CPS）</li>
-    </ul>
-  </div>
   <noscript>游戏需要启用 JavaScript。</noscript>
   <script src="ruian-patch.js?v=zh14"></script>
-  <script src="ruian-clicker.js?v=cl5"></script>
-  <script type="module" src="boot.js?v=zh4"></script>
+  <script src="ruian-clicker.js?v=cl6"></script>
+  <script type="module" src="boot.js?v=zh5"></script>
 </body>
 </html>

@@ -166,7 +166,7 @@
 
   function paint() {
     if (state.on) {
-      chip.textContent = `连点器 ${CPS} CPS · 按住左/右键 · C 关`;
+      chip.textContent = "连点器开";
       chip.hidden = false;
     } else {
       chip.hidden = true;

@@ -110,25 +110,6 @@ function show(status        , detail = "")       {
   detailLine.textContent = detail;
 }
 
-/** The inventory-shortcut hint, once the game's first frame is up: shown for a while, then faded out. */
-const TIP_MILLIS = 20000;
-function showTip()       {
-  const tip = document.getElementById("ruian-tip");
-  if (tip === null) {
-    return;
-  }
-  tip.hidden = false;
-  requestAnimationFrame(() => {
-    tip.classList.add("shown");
-  });
-  setTimeout(() => {
-    tip.classList.remove("shown");
-    setTimeout(() => {
-      tip.hidden = true;
-    }, 450);
-  }, TIP_MILLIS);
-}
-
 /** The bar's fill, 0 to 1; null for a step that can't say how far it is (the bar pulses). */
 function progress(fraction               )       {
   bar.classList.toggle("indeterminate", fraction === null);
@@ -408,7 +389,6 @@ async function boot()                {
     done: () => {
       if (!failed) {
         screen.hidden = true;
-        showTip();
       }
     },
   };
