@@ -119,6 +119,10 @@
         new MouseEvent("mouseup", { bubbles: true, cancelable: true, view: window, button, detail: 1, buttons: 0 }),
       );
     }
+    // 顺带把焦点还给画布，保证关掉连点器后攻击/挖掘立刻恢复。
+    if (typeof el.focus === "function") {
+      el.focus({ preventScroll: true });
+    }
   }
 
   /**
