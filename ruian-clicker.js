@@ -43,16 +43,12 @@
   }
 
   /**
-   * 游戏锁定的那个元素。游戏用 #incari-canvas 锁指针，但万一以后换了元素，
-   * 认任何被锁住的元素都算"在游戏里"，免得整套功能静默失效。
+   * 真的在游戏里：指针被锁住（说明进了游戏、没开界面），且页面没被切到后台。
+   * 注意：游戏自己的 mousedown 监听器是挂在 #incari-canvas 上的，所以点击
+   * 一律发给画布，发给别的元素会直接丢掉（那样连打人都不动了）。
    */
-  function locked() {
-    return document.pointerLockElement || null;
-  }
-
-  /** 真的在游戏里：指针被锁住（说明进了游戏、没开界面），且页面没被切到后台。 */
   function live() {
-    return locked() !== null && document.visibilityState !== "hidden";
+    return document.pointerLockElement !== null && document.visibilityState !== "hidden";
   }
 
   /** 下一次的间隔：43 CPS 的基准 ± 30% 抖动。 */
@@ -64,7 +60,7 @@
 
   /** 补一次点击：按下再松开，两下都交给游戏自己的监听器。 */
   function fire(button) {
-    const el = locked() || canvas();
+    const el = canvas();
     if (el === null) {
       return;
     }
@@ -105,6 +101,24 @@
     for (const b of [...timers.keys()]) {
       stop(b);
     }
+    clearButtons();
+  }
+
+  /**
+   * 给游戏补一次"松开"：万一游戏内部还留着"左键按着"的状态（比如我们拦下了
+   * 按下、游戏只收到一半，或者中途关了连点器），补两下松开把它清干净，
+   * 免得出现"按住没反应、挖方块也挖不动"这种卡住的情况。
+   */
+  function clearButtons() {
+    const el = canvas();
+    if (el === null) {
+      return;
+    }
+    for (const button of [LEFT, RIGHT]) {
+      el.dispatchEvent(
+        new MouseEvent("mouseup", { bubbles: true, cancelable: true, view: window, button, detail: 1, buttons: 0 }),
+      );
+    }
   }
 
   /**
@@ -119,7 +133,13 @@
       return false;
     }
     e.stopPropagation();
-    e.preventDefault();
+    // 游戏自己会在按下时把焦点给画布（Dom.java）。我们把事件拦了，就得替它做，
+    // 否则画布拿不到焦点，整套输入（攻击、挖掘、走路）都会失灵。
+    // 也不要 preventDefault：那会连带掐掉浏览器的聚焦行为。
+    const el = canvas();
+    if (el !== null && typeof el.focus === "function") {
+      el.focus({ preventScroll: true });
+    }
     return true;
   }
 
@@ -174,7 +194,7 @@
 
   guard(canvas());
   document.addEventListener("pointerlockchange", () => {
-    guard(locked());
+    guard(document.pointerLockElement);
     if (!live()) {
       releaseAll();
     }
