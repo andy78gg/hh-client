@@ -26,8 +26,8 @@
     },
     {
       "path": "ruian-fast.wasm",
-      "size": 38516719,
-      "sha256": "1025cc4aa6c5cea09cc1d1560bc2ffd3de486e22e39f8cc389a582b876dc7d56"
+      "size": 43891147,
+      "sha256": "0895cfd0bc585d668a4918dfff633986b58d3ef0b1f6f0e1449d5d87ed3d75ad"
     },
     {
       "path": "ruian.wasm",
